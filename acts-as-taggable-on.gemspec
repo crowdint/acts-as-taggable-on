@@ -2,13 +2,13 @@ $:.push File.dirname(__FILE__) + '/lib'
 require 'acts-as-taggable-on/version'
 
 Gem::Specification.new do |gem|
-  gem.name = %q{acts-as-taggable-on}
-  gem.authors = ["Michael Bleigh"]
+  gem.name = %q{crowdint_acts-as-taggable-on}
+  gem.authors = ["Michael Bleigh", 'Crowd Interactive']
   gem.date = %q{2012-05-26}
-  gem.description = %q{With ActsAsTaggableOn, you can tag a single model on several contexts, such as skills, interests, and awards. It also provides other advanced functionality.}
+  gem.description = %q{With ActsAsTaggableOn, you can tag a single model on several contexts, such as skills, interests, and awards. It also provides other advanced functionality. Do not remove old tags after creating a new tag}
   gem.summary = "Advanced tagging for Rails."
-  gem.email = %q{michael@intridea.com}
-  gem.homepage      = ''
+  gem.email = %q{michael@intridea.com opensource@crowdint.com}
+  gem.homepage      = 'https://github.com/crowdint/acts-as-taggable-on'
 
   gem.add_runtime_dependency 'rails', '~> 3.0'
   gem.add_development_dependency 'rspec', '~> 2.6'
@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  gem.name          = "acts-as-taggable-on"
+  gem.name          = "crowdint_acts-as-taggable-on"
   gem.require_paths = ['lib']
   gem.version       = ActsAsTaggableOn::VERSION
 end
