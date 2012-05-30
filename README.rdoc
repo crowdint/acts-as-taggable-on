@@ -1,4 +1,4 @@
-# Changed in this fork:
+= Changed in this fork:
 
 - The save_owned_tags method was modified in order to avoid old_tags deletion when updating the user owned_tags
 
