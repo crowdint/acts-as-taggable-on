@@ -1,5 +1,8 @@
+# Changed in this fork:
 
-The save_owned_tags method was modified in order to avoid old_tags deletion when updating the user owned_tags
+- The save_owned_tags method was modified in order to avoid old_tags deletion when updating the user owned_tags
+
+-------------------------------------
 
 = ActsAsTaggableOn
 {<img src="https://secure.travis-ci.org/mbleigh/acts-as-taggable-on.png" />}[http://travis-ci.org/mbleigh/acts-as-taggable-on]
