@@ -83,34 +83,7 @@ module ActsAsTaggableOn::Taggable
 
             # Tag objects for owned tags
             owned_tags = owner_tags_on(owner, context)
-               
-            # Tag maintenance based on whether preserving the created order of tags
-            if self.class.preserve_tag_order?
-              # First off order the array of tag objects to match the tag list
-              # rather than existing tags followed by new tags
-              tags = tag_list.uniq.map{|s| tags.detect{|t| t.name.downcase == s.downcase}}
-              # To preserve tags in the order in which they were added
-              # delete all owned tags and create new tags if the content or order has changed
-              old_tags = (tags == owned_tags ? [] : owned_tags)
-              new_tags = (tags == owned_tags ? [] : tags)
-            else
-              # Delete discarded tags and create new tags
-              old_tags = owned_tags - tags
-              new_tags = tags - owned_tags
-            end
-          
-            # Find all taggings that belong to the taggable (self), are owned by the owner, 
-            # have the correct context, and are removed from the list.
-            if old_tags.present?
-              old_taggings = ActsAsTaggableOn::Tagging.where(:taggable_id => id, :taggable_type => self.class.base_class.to_s,
-                                                             :tagger_type => owner.class.to_s, :tagger_id => owner.id,
-                                                             :tag_id => old_tags, :context => context).all
-            end
-          
-            # Destroy old taggings:
-            if old_taggings.present?
-              ActsAsTaggableOn::Tagging.destroy_all(:id => old_taggings.map(&:id))
-            end
+            new_tags = tags - owned_tags
 
             # Create new taggings:
             new_tags.each do |tag|
