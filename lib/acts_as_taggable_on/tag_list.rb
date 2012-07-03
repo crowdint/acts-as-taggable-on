@@ -14,7 +14,10 @@ module ActsAsTaggableOn
     # Example:
     #   tag_list = TagList.from("One , Two,  Three")
     #   tag_list # ["One", "Two", "Three"]
-    def self.from(string)
+    def self.from(tag_ids)
+
+      string = ActsAsTaggableOn::Tag.find(tag_ids)
+      string = string.respond_to?(:map) ? string.map(&:name) : string.name
       string = string.join(ActsAsTaggableOn.glue) if string.respond_to?(:join)
 
       new.tap do |tag_list|

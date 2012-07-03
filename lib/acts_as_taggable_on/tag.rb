@@ -2,16 +2,16 @@ module ActsAsTaggableOn
   class Tag < ::ActiveRecord::Base
     include ActsAsTaggableOn::Utils
 
-    attr_accessible :name
+    attr_accessible :name, :tagger_id, :context
 
     ### ASSOCIATIONS:
 
     has_many :taggings, :dependent => :destroy, :class_name => 'ActsAsTaggableOn::Tagging'
+    belongs_to :user
 
     ### VALIDATIONS:
 
     validates_presence_of :name
-    validates_uniqueness_of :name
     validates_length_of :name, :maximum => 255
 
     ### SCOPES:
@@ -20,8 +20,8 @@ module ActsAsTaggableOn
       where(["lower(name) = ?", name.downcase])
     end
 
-    def self.named_any(list)
-      where(list.map { |tag| sanitize_sql(["lower(name) = ?", tag.to_s.downcase]) }.join(" OR "))
+    def self.named_any(list, owner, context)
+      where(list.map { |tag| sanitize_sql(["lower(name) = ? and tagger_id = ? and context = ?", tag.to_s.downcase, owner, context]) }.join(" OR "))
     end
 
     def self.named_like(name)
@@ -38,12 +38,12 @@ module ActsAsTaggableOn
       named_like(name).first || create(:name => name)
     end
 
-    def self.find_or_create_all_with_like_by_name(*list)
+    def self.find_or_create_all_with_like_by_name(*list, owner, context)
       list = [list].flatten
 
       return [] if list.empty?
 
-      existing_tags = Tag.named_any(list).all
+      existing_tags = Tag.named_any(list, owner, context).all
       new_tag_names = list.reject do |name|
                         name = comparable_name(name)
                         existing_tags.any? { |tag| comparable_name(tag.name) == name }

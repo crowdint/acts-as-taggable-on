@@ -57,13 +57,13 @@ module ActsAsTaggableOn::Taggable
         cache[owner] ||= ActsAsTaggableOn::TagList.new(*owner_tags_on(owner, context).map(&:name))
       end
       
-      def set_owner_tag_list_on(owner, context, new_list)
+      def set_owner_tag_list_on(owner, context, tag_ids)
         add_custom_context(context)
         
         cache = cached_owned_tag_list_on(context)
         cache.delete_if { |key, value| key.id == owner.id && key.class == owner.class }
 
-        cache[owner] = ActsAsTaggableOn::TagList.from(new_list)
+        cache[owner] = ActsAsTaggableOn::TagList.from(tag_ids)
       end
       
       def reload(*args)
@@ -79,7 +79,7 @@ module ActsAsTaggableOn::Taggable
           cached_owned_tag_list_on(context).each do |owner, tag_list|
             
             # Find existing tags or create non-existing tags:
-            tags = ActsAsTaggableOn::Tag.find_or_create_all_with_like_by_name(tag_list.uniq)            
+            tags = ActsAsTaggableOn::Tag.find_or_create_all_with_like_by_name(tag_list.uniq, owner, context)
 
             # Tag objects for owned tags
             owned_tags = owner_tags_on(owner, context)
