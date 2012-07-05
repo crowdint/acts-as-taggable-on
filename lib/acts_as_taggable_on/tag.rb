@@ -2,7 +2,7 @@ module ActsAsTaggableOn
   class Tag < ::ActiveRecord::Base
     include ActsAsTaggableOn::Utils
 
-    attr_accessible :name, :tagger_id, :context
+    attr_accessible :name, :tagger_id, :context, :tagger_type
 
     ### ASSOCIATIONS:
 
